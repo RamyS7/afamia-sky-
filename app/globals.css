@@ -135,6 +135,10 @@
     margin: 0;
     padding: 0;
   }
+  html {
+    /* الهيدر ثابت بارتفاع 80px (h-20): لينكات الأقسام تقف تحته مش وراه */
+    scroll-padding-top: 5rem;
+  }
   body {
     overscroll-behavior: none;
   }

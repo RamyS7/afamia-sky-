@@ -71,8 +71,11 @@ export default async function LocaleLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* ده الـ root layout فبيتحمّل على كل الصفحات، فتحذير no-page-custom-font (الخاص بـ pages router) مش منطبق.
+            display=block: أسماء الأيقونات (menu, close...) متظهرش كنص لحد ما الخط يتحمّل */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/google-font-display -- خط أيقونات: block هو الصح هنا */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block"
           rel="stylesheet"
         />
       </head>

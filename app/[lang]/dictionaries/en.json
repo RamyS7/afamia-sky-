@@ -176,10 +176,10 @@
       "locationTitle": "HEADQUARTERS & CENTRAL WAREHOUSE",
       "locationDesc": "Arab Republic of Egypt - Industrial & Logistics Development Zone",
       "phoneTitle": "DIRECT CALL & WHATSAPP",
-      "phoneValue": "+20 XXX XXX XXXX",
+      "phoneValue": "+20 100 639 1550",
       "phoneDesc": "Corporate B2B sales & bulk orders desk",
       "emailTitle": "ORDERS & TENDERS EMAIL",
-      "emailValue": "info@example.com",
+      "emailValue": "afamiaplywood@gmail.com",
       "emailDesc": "Send tender documents and project specs",
       "hoursTitle": "OFFICIAL WORKING HOURS",
       "hoursValue": "Sunday - Thursday: 08:00 AM - 05:00 PM",
@@ -194,7 +194,7 @@
       "companyLabel": "Company Name *",
       "companyPlaceholder": "Factory or company name",
       "phoneLabel": "Phone / Mobile Number *",
-      "phonePlaceholder": "+20 XXX XXX XXXX",
+      "phonePlaceholder": "01XXXXXXXXX",
       "emailLabel": "Work Email *",
       "emailPlaceholder": "procurement@company.com",
       "productLabel": "Product / Supply Required *",
@@ -209,7 +209,8 @@
       "messagePlaceholder": "Specify dimensions, thickness, cubic meters or pallets, and expected delivery timeline...",
       "submitBtn": "Send Inquiry",
       "submitting": "Sending...",
-      "success": "Your request has been successfully received. A technical sales manager will contact you within 24 business hours."
+      "success": "Your request has been successfully received. A technical sales manager will contact you within 24 business hours.",
+      "error": "We couldn't send your request right now. Please try again or contact us directly via WhatsApp or phone."
     }
   },
   "footer": {
@@ -228,30 +229,7 @@
     "c4": "B2B Tenders & Quotes",
     "c5": "Support & Procurement",
     "location": "Industrial Development Zone, Cairo, Egypt",
-    "copyright": "© 2025 Afamia Plywood. All industrial patents & material rights reserved.",
-    "terms": "Terms of Procurement",
-    "standards": "Quality Standards",
-    "privacy": "Privacy Policy"
-  },
-  "calculator": {
-    "tag": "TECHNICAL ESTIMATION TOOL",
-    "title": "Volume & Quantity Estimator",
-    "subtitle": "Calculate volume in cubic meters (m³), estimated weight, and required sheets or pallets for your project instantly.",
-    "productType": "Product Type",
-    "plywood": "Birch Plywood",
-    "redPine": "Red Pine Lumber",
-    "spruce": "Spruce Whitewood Lumber",
-    "birchLogs": "Raw Birch Round Logs",
-    "thickness": "Thickness (mm)",
-    "length": "Length (mm)",
-    "width": "Width (mm)",
-    "quantity": "Quantity (Sheets / Pieces)",
-    "calcResult": "Estimation Results",
-    "volumeM3": "Total Volume (m³)",
-    "estWeight": "Est. Weight (kg)",
-    "estPallets": "Est. Pallets",
-    "requestQuoteBtn": "Request Quote for Calculated Quantity",
-    "note": "* Estimates are based on standard wood densities (650-700 kg/m³). Request an official quotation for verified engineering specs."
+    "copyright": "© 2025 Afamia Plywood. All industrial patents & material rights reserved."
   },
   "quickQuoteModal": {
     "title": "Fast B2B Quote Request",
@@ -259,11 +237,13 @@
     "close": "Close",
     "send": "Send Request",
     "sending": "Sending...",
-    "success": "Your request was submitted successfully! We will contact you shortly."
+    "success": "Your request was submitted successfully! We will contact you shortly.",
+    "error": "We couldn't send your request right now. Please try again or contact us directly via WhatsApp or phone."
   },
   "floatingContact": {
     "call": "Direct Call",
     "whatsapp": "WhatsApp Sales",
-    "quote": "Fast Quote"
+    "quote": "Fast Quote",
+    "whatsappMessage": "Hello Afamia Plywood, I'd like to inquire about a supply order."
   }
 }

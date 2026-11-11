@@ -1,14 +1,16 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import { Dictionary } from "../[lang]/dictionaries";
+import { submitInquiry } from "../lib/submitInquiry";
 
 interface QuickQuoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   t: Dictionary["quickQuoteModal"];
   contactFormT: Dictionary["contact"]["form"];
+  lang: "ar" | "en";
   initialProduct?: string;
   initialMessage?: string;
 }
@@ -18,11 +20,13 @@ export default function QuickQuoteModal({
   onClose,
   t,
   contactFormT,
+  lang,
   initialProduct = "",
   initialMessage = "",
 }: QuickQuoteModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -30,35 +34,68 @@ export default function QuickQuoteModal({
     email: "",
     product: initialProduct || "plywood",
     message: initialMessage || "",
+    website: "",
   });
+
+  const uid = useId();
+  const fid = (name: string) => `${uid}-${name}`;
+
+  // Esc يقفل المودال + منع scroll الصفحة اللي وراه طول ما هو مفتوح
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 600);
+    setHasError(false);
+    const ok = await submitInquiry({ ...formData, source: "quick-quote", lang });
+    setIsSubmitting(false);
+    if (ok) setIsSubmitted(true);
+    else setHasError(true);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-surface max-w-xl w-full p-6 md:p-8 shadow-2xl relative border border-outline-variant text-start max-h-[90vh] overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      onClick={(e) => {
+        // الضغط على الخلفية (برّه الصندوق) يقفل المودال
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={fid("title")}
+        className="bg-surface max-w-xl w-full p-6 md:p-8 shadow-2xl relative border border-outline-variant text-start max-h-[90vh] overflow-y-auto"
+      >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface p-2 rounded-full cursor-pointer"
+          aria-label={t.close}
+          className="absolute top-4 end-4 text-on-surface-variant hover:text-on-surface p-2 rounded-full cursor-pointer"
         >
           <span className="material-symbols-outlined text-[24px]">close</span>
         </button>
 
-        <div className="mb-6">
+        <div className="mb-6 pe-10">
           <span className="font-spec-code text-spec-code text-primary uppercase font-bold tracking-widest block mb-1">
             AFAMIA B2B
           </span>
-          <h3 className="font-headline-md text-headline-md text-on-surface">
+          <h3 id={fid("title")} className="font-headline-md text-headline-md text-on-surface">
             {t.title}
           </h3>
           <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
@@ -68,12 +105,24 @@ export default function QuickQuoteModal({
 
         {!isSubmitted ? (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* honeypot ضد السبام — مخفي عن المستخدمين */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+              value={formData.website}
+              onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1">
+                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1" htmlFor={fid("name")}>
                   {contactFormT.nameLabel}
                 </label>
                 <input
+                  id={fid("name")}
                   type="text"
                   required
                   placeholder={contactFormT.namePlaceholder}
@@ -83,10 +132,11 @@ export default function QuickQuoteModal({
                 />
               </div>
               <div>
-                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1">
+                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1" htmlFor={fid("company")}>
                   {contactFormT.companyLabel}
                 </label>
                 <input
+                  id={fid("company")}
                   type="text"
                   required
                   placeholder={contactFormT.companyPlaceholder}
@@ -99,10 +149,11 @@ export default function QuickQuoteModal({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1">
+                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1" htmlFor={fid("phone")}>
                   {contactFormT.phoneLabel}
                 </label>
                 <input
+                  id={fid("phone")}
                   type="tel"
                   required
                   dir="ltr"
@@ -113,10 +164,11 @@ export default function QuickQuoteModal({
                 />
               </div>
               <div>
-                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1">
+                <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1" htmlFor={fid("email")}>
                   {contactFormT.emailLabel}
                 </label>
                 <input
+                  id={fid("email")}
                   type="email"
                   required
                   dir="ltr"
@@ -129,10 +181,11 @@ export default function QuickQuoteModal({
             </div>
 
             <div>
-              <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1">
+              <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1" htmlFor={fid("product")}>
                 {contactFormT.productLabel}
               </label>
               <select
+                id={fid("product")}
                 required
                 value={formData.product}
                 onChange={(e) => setFormData({ ...formData, product: e.target.value })}
@@ -148,10 +201,11 @@ export default function QuickQuoteModal({
             </div>
 
             <div>
-              <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1">
+              <label className="block font-spec-code text-spec-code uppercase text-on-surface-variant mb-1" htmlFor={fid("message")}>
                 {contactFormT.messageLabel}
               </label>
               <textarea
+                id={fid("message")}
                 rows={3}
                 required
                 placeholder={contactFormT.messagePlaceholder}
@@ -160,6 +214,15 @@ export default function QuickQuoteModal({
                 className="w-full p-3 bg-surface-container-low focus:bg-surface-container text-on-surface font-body-sm outline-none resize-none"
               />
             </div>
+
+            {hasError && (
+              <div
+                role="alert"
+                className="p-3 bg-error-container text-on-error-container font-body-sm text-body-sm border border-error/30"
+              >
+                {t.error}
+              </div>
+            )}
 
             <div className="pt-2">
               <button

@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import { Dictionary } from "../[lang]/dictionaries";
+import { CONTACT_PHONE_E164, whatsappLink } from "../lib/contact";
 
 interface FloatingWhatsAppProps {
   t: Dictionary["floatingContact"];
@@ -15,8 +16,8 @@ export default function FloatingWhatsApp({
 }: FloatingWhatsAppProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const phone = "+201000000000"; // Example phone or configured phone
-  const whatsappUrl = `https://wa.me/${phone.replace(/\+/g, "")}?text=${encodeURIComponent("مرحباً مصنع أفاميا للأخشاب، أرغب بالحصول على استفسار حول طلب توريد B2B.")}`;
+  const phone = CONTACT_PHONE_E164;
+  const whatsappUrl = whatsappLink(t.whatsappMessage);
 
   return (
     <div className="fixed bottom-6 ltr:right-6 rtl:left-6 z-40 flex flex-col items-end gap-3">

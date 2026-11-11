@@ -1,5 +1,6 @@
 
 import React from "react";
+import Image from "next/image";
 import { Dictionary } from "../[lang]/dictionaries";
 
 interface ProductsSectionProps {
@@ -49,10 +50,12 @@ export default function ProductsSection({ t, onOpenQuoteModal }: ProductsSection
                 </span>
               </div>
               <div className="relative overflow-hidden aspect-[16/9] mb-6 bg-surface-container rounded-sm shadow-inner group-hover:shadow-md transition-all">
-                <img
+                <Image
+                  fill
                   alt={t.plywood.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   src="/g2.jpg"
+                  sizes="(min-width: 1024px) 58vw, (min-width: 768px) 50vw, 100vw"
                 />
                 <div className="absolute top-3 right-3 bg-inverse-surface/90 text-surface-bright px-3 py-1 font-spec-code text-spec-code border border-white/10 backdrop-blur-sm">
                   EN 636-3 / MARINE &amp; STRUCTURAL
@@ -107,10 +110,12 @@ export default function ProductsSection({ t, onOpenQuoteModal }: ProductsSection
                 </span>
               </div>
               <div className="relative overflow-hidden aspect-[16/10] mb-6 bg-surface-container rounded-sm">
-                <img
+                <Image
+                  fill
                   alt={t.redPine.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   src="/redpine.jpg"
+                  sizes="(min-width: 1024px) 42vw, (min-width: 768px) 50vw, 100vw"
                 />
               </div>
               <h3 className="font-headline-md text-headline-md text-on-surface mb-2">
@@ -147,10 +152,12 @@ export default function ProductsSection({ t, onOpenQuoteModal }: ProductsSection
                 </span>
               </div>
               <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-surface-container rounded-sm">
-                <img
+                <Image
+                  fill
                   alt={t.spruce.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   src="/spruce.jpg"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                 />
               </div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface mb-2">
@@ -181,10 +188,12 @@ export default function ProductsSection({ t, onOpenQuoteModal }: ProductsSection
                 </span>
               </div>
               <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-surface-container rounded-sm">
-                <img
+                <Image
+                  fill
                   alt={t.birchLogs.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   src="/birch.jpg"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                 />
               </div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface mb-2">
@@ -215,10 +224,12 @@ export default function ProductsSection({ t, onOpenQuoteModal }: ProductsSection
                 </span>
               </div>
               <div className="relative overflow-hidden aspect-[4/3] mb-6 bg-surface-container rounded-sm">
-                <img
+                <Image
+                  fill
                   alt={t.aspenLogs.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   src="/aspen.jpg"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                 />
               </div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface mb-2">

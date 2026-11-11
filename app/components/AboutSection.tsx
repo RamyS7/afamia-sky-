@@ -1,5 +1,6 @@
 
 import React from "react";
+import Image from "next/image";
 import { Dictionary } from "../[lang]/dictionaries";
 
 interface AboutSectionProps {
@@ -16,10 +17,12 @@ export default function AboutSection({ t }: AboutSectionProps) {
           {/* Imagery Panel */}
           <div className="lg:col-span-6 relative">
             <div className="relative bg-surface-container shadow-2xl overflow-hidden aspect-[4/3] group">
-              <img
+              <Image
+                fill
                 alt={t.specTitle}
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                 src={ABOUT_IMG}
+                sizes="(min-width: 1024px) 50vw, 100vw"
               />
               {/* Inset Floating Spec Plate */}
               <div className="absolute bottom-4 right-4 left-4 bg-inverse-surface/95 text-surface-bright p-5 backdrop-blur-md flex items-center justify-between shadow-xl">

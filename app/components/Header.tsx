@@ -14,7 +14,9 @@ interface HeaderProps {
 
 export default function Header({ currentLang, t }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [switchingTo, setSwitchingTo] = useState<"ar" | "en" | null>(null);
+  // بنسجل اللغة اللي بدأنا منها؛ أول ما currentLang يتغير الحالة تتلغى تلقائيًا من غير useEffect
+  const [switching, setSwitching] = useState<{ from: "ar" | "en"; to: "ar" | "en" } | null>(null);
+  const switchingTo = switching && switching.from === currentLang ? switching.to : null;
   const savedScrollRef = useRef(0);
   const guardRafRef = useRef(0);
   const router = useRouter();
@@ -22,13 +24,9 @@ export default function Header({ currentLang, t }: HeaderProps) {
 
   useEffect(() => () => cancelAnimationFrame(guardRafRef.current), []);
 
-  useEffect(() => {
-    setSwitchingTo(null);
-  }, [currentLang]);
-
   const switchLanguage = (targetLang: "ar" | "en") => {
     if (targetLang === currentLang || switchingTo) return;
-    setSwitchingTo(targetLang);
+    setSwitching({ from: currentLang, to: targetLang });
     const newPath = pathname ? pathname.replace(`/${currentLang}`, `/${targetLang}`) : `/${targetLang}`;
     // تبديل اللغة يقلب اتجاه الصفحة ويعيد بناءها، فيُصفَّر التمرير حتى مع scroll:false —
     // نحفظ الموضع ونعيده خلال نافذة قصيرة حتى يستقر التخطيط الجديد، ونترك المستخدم يلغيها بلمسه
@@ -75,8 +73,11 @@ export default function Header({ currentLang, t }: HeaderProps) {
             data-path="home"
             href={`/${currentLang}`}
             onClick={(e) => {
+              // إحنا أصلاً على الصفحة الرئيسية: نطلع لفوق بدل reload كامل
               e.preventDefault();
-              window.location.href = `/${currentLang}`;
+              setMobileMenuOpen(false);
+              if (window.location.hash) history.replaceState(null, "", `/${currentLang}`);
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
             <Image

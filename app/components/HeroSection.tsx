@@ -4,12 +4,11 @@ import { Dictionary } from "../[lang]/dictionaries";
 
 interface HeroSectionProps {
   t: Dictionary["hero"];
-  onOpenQuoteModal?: () => void;
 }
 
 const HERO_BG_IMAGE = "/hero.jpg";
 
-export default function HeroSection({ t, onOpenQuoteModal }: HeroSectionProps) {
+export default function HeroSection({ t }: HeroSectionProps) {
   return (
     <section className="relative w-full -mt-20 overflow-hidden bg-inverse-surface min-h-[88vh] flex items-center justify-center">
       {/* Full-bleed background from industrial warehouse image */}

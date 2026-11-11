@@ -3,30 +3,43 @@
 
 import React, { useState } from "react";
 import { Dictionary } from "../[lang]/dictionaries";
+import { CONTACT_EMAIL, CONTACT_PHONE_E164 } from "../lib/contact";
+import { submitInquiry } from "../lib/submitInquiry";
 
 interface ContactSectionProps {
   t: Dictionary["contact"];
+  lang: "ar" | "en";
 }
 
-export default function ContactSection({ t }: ContactSectionProps) {
+const EMPTY_FORM = {
+  name: "",
+  company: "",
+  phone: "",
+  email: "",
+  product: "",
+  message: "",
+  website: "",
+};
+
+export default function ContactSection({ t, lang }: ContactSectionProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    company: "",
-    phone: "",
-    email: "",
-    product: "",
-    message: "",
-  });
+  const [hasError, setHasError] = useState(false);
+  const [formData, setFormData] = useState(EMPTY_FORM);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setHasError(false);
+    const ok = await submitInquiry({ ...formData, source: "contact-form", lang });
+    setIsSubmitting(false);
+    if (ok) {
       setIsSubmitted(true);
-    }, 700);
+      setFormData(EMPTY_FORM);
+    } else {
+      setHasError(true);
+    }
   };
 
   return (
@@ -77,12 +90,13 @@ export default function ContactSection({ t }: ContactSectionProps) {
                     <span className="font-spec-code text-spec-code text-secondary block uppercase">
                       {t.info.phoneTitle}
                     </span>
-                    <span
-                      className="font-headline-sm text-headline-sm text-on-surface block mt-0.5"
+                    <a
+                      className="font-headline-sm text-headline-sm text-on-surface block mt-0.5 hover:text-primary transition-colors"
                       dir="ltr"
+                      href={`tel:${CONTACT_PHONE_E164}`}
                     >
                       {t.info.phoneValue}
-                    </span>
+                    </a>
                     <span className="font-body-sm text-body-sm text-on-surface-variant">
                       {t.info.phoneDesc}
                     </span>
@@ -99,12 +113,13 @@ export default function ContactSection({ t }: ContactSectionProps) {
                     <span className="font-spec-code text-spec-code text-secondary block uppercase">
                       {t.info.emailTitle}
                     </span>
-                    <span
-                      className="font-headline-sm text-headline-sm text-on-surface block mt-0.5"
+                    <a
+                      className="font-body-lg text-body-lg font-semibold text-on-surface block mt-0.5 hover:text-primary transition-colors [overflow-wrap:anywhere]"
                       dir="ltr"
+                      href={`mailto:${CONTACT_EMAIL}`}
                     >
                       {t.info.emailValue}
-                    </span>
+                    </a>
                     <span className="font-body-sm text-body-sm text-on-surface-variant">
                       {t.info.emailDesc}
                     </span>
@@ -148,6 +163,17 @@ export default function ContactSection({ t }: ContactSectionProps) {
             </div>
 
             <form className="space-y-5" id="afamia-b2b-form" onSubmit={handleSubmit}>
+              {/* honeypot ضد السبام — مخفي عن المستخدمين */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+                value={formData.website}
+                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label
@@ -269,6 +295,21 @@ export default function ContactSection({ t }: ContactSectionProps) {
               </div>
 
               <div className="pt-2">
+                {hasError && (
+                  <div
+                    role="alert"
+                    className="mb-4 p-4 bg-error-container text-on-error-container font-body-sm text-body-sm border border-error/30"
+                  >
+                    {t.form.error}{" "}
+                    <a className="underline font-semibold" dir="ltr" href={`tel:${CONTACT_PHONE_E164}`}>
+                      {t.info.phoneValue}
+                    </a>
+                    {" · "}
+                    <a className="underline font-semibold" href={`mailto:${CONTACT_EMAIL}`}>
+                      {CONTACT_EMAIL}
+                    </a>
+                  </div>
+                )}
                 {!isSubmitted ? (
                   <button
                     className="w-full h-14 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-colors cursor-pointer disabled:opacity-50 rounded-full"
