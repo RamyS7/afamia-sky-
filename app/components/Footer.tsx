@@ -1,36 +1,48 @@
-
 import React from "react";
 import Image from "next/image";
 import { Dictionary } from "../[lang]/dictionaries";
-import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164, FACEBOOK_URL } from "../lib/contact";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PEOPLE,
+  FACEBOOK_URL,
+  WEBSITE_DISPLAY,
+  WEBSITE_URL,
+} from "../lib/contact";
 
 interface FooterProps {
   t: Dictionary["footer"];
+  contact: Dictionary["contact"];
 }
 
-export default function Footer({ t }: FooterProps) {
+export default function Footer({ t, contact }: FooterProps) {
+  const products = [t.p1, t.p2, t.p3, t.p4, t.p5, t.p6];
+  const links = [
+    { label: t.c1, href: "#about-us" },
+    { label: t.c2, href: "#supply" },
+    { label: t.c3, href: "#enquiry" },
+    { label: t.c4, href: "#contact-inquiry" },
+  ];
+
   return (
-    <footer className="w-full bg-inverse-surface text-inverse-on-surface pt-gutter-3xl pb-gutter-xl">
+    <footer className="w-full bg-surface-container-low text-on-surface border-t border-outline-variant pt-gutter-3xl pb-gutter-xl">
       <div className="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-gutter-xl mb-gutter-2xl">
-          {/* Column 1: Brand info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-gutter-xl mb-gutter-2xl text-start">
+          {/* العلامة */}
           <div className="lg:col-span-4 flex flex-col items-start">
-            <div className="flex items-center gap-3 mb-gutter-md">
-              <Image
-                src="/logo.png"
-                alt="Afamia Plywood"
-                width={240}
-                height={96}
-                className="h-16 sm:h-20 w-auto object-contain drop-shadow-md"
-              />
-            </div>
-            <p className="font-body-sm text-body-sm text-surface-container-highest max-w-sm mb-gutter-lg leading-relaxed">
+            <Image
+              src="/logo.png"
+              alt="AFAMIA SKY PLYWOOD LLC"
+              width={240}
+              height={179}
+              className="h-16 sm:h-20 w-auto object-contain mb-gutter-md"
+            />
+            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm mb-gutter-lg leading-relaxed">
               {t.description}
             </p>
             <div className="flex items-center gap-gutter-sm">
               <a
                 aria-label="Facebook"
-                className="w-10 h-10 bg-surface-container-highest/10 hover:bg-primary text-surface-bright hover:text-on-primary flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-inverse-surface/10 hover:bg-inverse-surface text-on-surface hover:text-surface-bright flex items-center justify-center transition-colors"
                 href={FACEBOOK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -40,8 +52,8 @@ export default function Footer({ t }: FooterProps) {
                 </svg>
               </a>
               <a
-                aria-label="Direct Inquiries Mailbox"
-                className="w-10 h-10 bg-surface-container-highest/10 hover:bg-primary text-surface-bright hover:text-on-primary flex items-center justify-center transition-colors"
+                aria-label="Email"
+                className="w-10 h-10 bg-inverse-surface/10 hover:bg-inverse-surface text-on-surface hover:text-surface-bright flex items-center justify-center transition-colors"
                 href={`mailto:${CONTACT_EMAIL}`}
               >
                 <span className="material-symbols-outlined text-[18px]">mail</span>
@@ -49,112 +61,75 @@ export default function Footer({ t }: FooterProps) {
             </div>
           </div>
 
-          {/* Column 2: Engineered Products */}
+          {/* المنتجات */}
           <div className="lg:col-span-3 flex flex-col">
-            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim mb-gutter-md">
+            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary mb-gutter-md">
               {t.col1Title}
             </span>
-            <ul className="space-y-3 font-body-sm text-body-sm text-surface-container-highest">
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="products" href="#products-showcase">
-                  {t.p1}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="products" href="#products-showcase">
-                  {t.p2}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="products" href="#products-showcase">
-                  {t.p3}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="products" href="#products-showcase">
-                  {t.p4}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="products" href="#products-showcase">
-                  {t.p5}
-                </a>
-              </li>
+            <ul className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+              {products.map((name) => (
+                <li key={name} className="hover:text-on-surface transition-colors">
+                  <a href="#products-showcase">{name}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 3: Corporate */}
+          {/* الشركة */}
           <div className="lg:col-span-2 flex flex-col">
-            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim mb-gutter-md">
+            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary mb-gutter-md">
               {t.col2Title}
             </span>
-            <ul className="space-y-3 font-body-sm text-body-sm text-surface-container-highest">
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="about-us" href="#about-us">
-                  {t.c1}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="services" href="#services">
-                  {t.c2}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="quote-request" href="#contact-inquiry">
-                  {t.c4}
-                </a>
-              </li>
-              <li className="hover:text-primary-fixed transition-colors">
-                <a data-path="contact-us" href="#contact-inquiry">
-                  {t.c5}
-                </a>
-              </li>
+            <ul className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+              {links.map((l) => (
+                <li key={l.href} className="hover:text-on-surface transition-colors">
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 4: HQ & Contact */}
+          {/* التواصل */}
           <div className="lg:col-span-3 flex flex-col">
-            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim mb-gutter-md">
+            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary mb-gutter-md">
               {t.col3Title}
             </span>
-            <div className="space-y-3 font-body-sm text-body-sm text-surface-container-highest">
+            <div className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-primary-fixed-dim shrink-0 mt-0.5">
-                  location_on
-                </span>
-                <span>{t.location}</span>
+                <span className="material-symbols-outlined text-[18px] text-accent shrink-0 mt-0.5">location_on</span>
+                <span>{contact.info.locationDesc}</span>
               </div>
+              {CONTACT_PEOPLE.map((p) => (
+                <div key={p.id} className="flex items-start gap-2.5">
+                  <span className="material-symbols-outlined text-[18px] text-accent shrink-0 mt-0.5">call</span>
+                  <span>
+                    <a dir="ltr" href={`tel:${p.phoneE164}`} className="hover:text-on-surface transition-colors">
+                      {p.phoneDisplay}
+                    </a>
+                    <span className="block text-secondary">
+                      {p.name} · {contact.roles[p.id]}
+                    </span>
+                  </span>
+                </div>
+              ))}
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-primary-fixed-dim shrink-0">
-                  call
-                </span>
-                <a dir="ltr" href={`tel:${CONTACT_PHONE_E164}`} className="hover:text-primary-fixed transition-colors">
-                  {CONTACT_PHONE_DISPLAY}
-                </a>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-primary-fixed-dim shrink-0">
-                  mail
-                </span>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-primary-fixed transition-colors">
+                <span className="material-symbols-outlined text-[18px] text-accent shrink-0">mail</span>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-on-surface transition-colors [overflow-wrap:anywhere]">
                   {CONTACT_EMAIL}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-primary-fixed-dim shrink-0">
-                  schedule
-                </span>
-                <span>Sun - Thu: 08:00 - 17:00 (GMT+2)</span>
+                <span className="material-symbols-outlined text-[18px] text-accent shrink-0">language</span>
+                <a dir="ltr" href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-on-surface transition-colors">
+                  {WEBSITE_DISPLAY}
+                </a>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom copyright bar */}
-        <div className="pt-gutter-lg flex flex-col sm:flex-row items-center justify-between gap-gutter-md font-spec-code text-spec-code text-surface-variant border-t border-surface-container-highest/10">
-          <div className="text-center sm:text-start">
-            {t.copyright}
-          </div>
+        <div className="pt-gutter-lg border-t border-outline-variant font-spec-code text-spec-code text-secondary text-center sm:text-start">
+          {t.copyright}
         </div>
       </div>
     </footer>

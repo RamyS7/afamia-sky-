@@ -3,6 +3,7 @@
 
 import React, { useEffect, useId, useState } from "react";
 import { Dictionary } from "../[lang]/dictionaries";
+import { inquiryWhatsAppUrl } from "../lib/contact";
 import { submitInquiry } from "../lib/submitInquiry";
 
 interface QuickQuoteModalProps {
@@ -32,7 +33,7 @@ export default function QuickQuoteModal({
     company: "",
     phone: "",
     email: "",
-    product: initialProduct || "plywood",
+    product: initialProduct || "birch-plywood",
     message: initialMessage || "",
     website: "",
   });
@@ -56,6 +57,25 @@ export default function QuickQuoteModal({
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+
+  const productLabels: Record<string, string> = {
+    panels: contactFormT.optPanels,
+    "birch-plywood": contactFormT.optBirchPlywood,
+    hardwood: contactFormT.optHardwood,
+    softwood: contactFormT.optSoftwood,
+    veneer: contactFormT.optVeneer,
+    "birch-veneer": contactFormT.optBirchVeneer,
+    "birch-logs": contactFormT.optBirchLogs,
+    "custom-solution": contactFormT.optCustom,
+  };
+
+  const openWhatsApp = () => {
+    const url = inquiryWhatsAppUrl(
+      { ...formData, productLabel: productLabels[formData.product] ?? "" },
+      lang
+    );
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +113,7 @@ export default function QuickQuoteModal({
 
         <div className="mb-6 pe-10">
           <span className="font-spec-code text-spec-code text-primary uppercase font-bold tracking-widest block mb-1">
-            AFAMIA B2B
+            AFAMIA SKY PLYWOOD
           </span>
           <h3 id={fid("title")} className="font-headline-md text-headline-md text-on-surface">
             {t.title}
@@ -191,11 +211,13 @@ export default function QuickQuoteModal({
                 onChange={(e) => setFormData({ ...formData, product: e.target.value })}
                 className="w-full h-11 px-3 bg-surface-container-low focus:bg-surface-container text-on-surface font-body-sm outline-none cursor-pointer"
               >
-                <option value="plywood">{contactFormT.optPlywood}</option>
-                <option value="red-pine">{contactFormT.optRedPine}</option>
-                <option value="spruce">{contactFormT.optSpruce}</option>
+                <option value="panels">{contactFormT.optPanels}</option>
+                <option value="birch-plywood">{contactFormT.optBirchPlywood}</option>
+                <option value="hardwood">{contactFormT.optHardwood}</option>
+                <option value="softwood">{contactFormT.optSoftwood}</option>
+                <option value="veneer">{contactFormT.optVeneer}</option>
+                <option value="birch-veneer">{contactFormT.optBirchVeneer}</option>
                 <option value="birch-logs">{contactFormT.optBirchLogs}</option>
-                <option value="aspen-logs">{contactFormT.optAspenLogs}</option>
                 <option value="custom-solution">{contactFormT.optCustom}</option>
               </select>
             </div>
@@ -241,6 +263,18 @@ export default function QuickQuoteModal({
                     <span>{t.send}</span>
                   </>
                 )}
+              </button>
+
+              {/* بديل الواتساب: يبعت نفس بيانات الفورم كرسالة جاهزة */}
+              <button
+                type="button"
+                onClick={openWhatsApp}
+                className="w-full h-11 mt-3 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#128C7E] font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer rounded-full border border-[#25D366]/30"
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                  <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07a8.1 8.1 0 0 1-2.39-1.47 8.96 8.96 0 0 1-1.65-2.06c-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.11 3.22 5.1 4.51.71.31 1.27.5 1.7.63.72.23 1.37.2 1.88.12.58-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 1 1 8.38 4.63M12.05 1.6a11.8 11.8 0 0 0-10.2 17.72L.16 24l5.8-1.52a11.8 11.8 0 1 0 6.1-20.87" />
+                </svg>
+                <span>{contactFormT.waBtn}</span>
               </button>
             </div>
           </form>

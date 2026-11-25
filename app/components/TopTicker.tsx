@@ -1,41 +1,32 @@
-
 import React from "react";
 import { Dictionary } from "../[lang]/dictionaries";
+import { CONTACT_PEOPLE } from "../lib/contact";
 
 interface TopTickerProps {
-  t: Dictionary["topTicker"];
+  t: Dictionary["hero"];
 }
 
+// شريط رفيع تحت الهيدر: نوع النشاط والموقع + أرقام التواصل
 export default function TopTicker({ t }: TopTickerProps) {
   return (
-    <div className="relative w-full overflow-hidden bg-inverse-surface text-surface-bright py-2 px-margin-mobile md:px-margin-desktop">
-      {/* Background image from /hero.jpg - Direct full color without gradient mask */}
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{ backgroundImage: `url("/hero.jpg")` }}
-      />
-
-      <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-2 font-spec-code text-spec-code drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] font-bold">
-        <div className="flex items-center gap-4">
-          <span className="inline-flex items-center gap-1.5 text-primary-fixed drop-shadow">
-            <span className="w-2 h-2 rounded-full bg-primary-fixed-dim inline-block animate-pulse"></span>
-            {t.badge}
-          </span>
-        </div>
-        <div className="flex items-center gap-6 text-surface-container-highest">
-          <span className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[15px] text-primary-fixed">
-              verified
-            </span>
-            {" "}{t.verified}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[15px] text-primary-fixed">
-              local_shipping
-            </span>
-            {" "}{t.shipping}
-          </span>
-        </div>
+    <div className="w-full bg-inverse-surface text-inverse-on-surface py-2 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
+      <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-6 font-spec-code text-spec-code">
+        <span className="flex items-center gap-2 uppercase tracking-widest">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block" />
+          {t.badge} · {t.location}
+        </span>
+        <span className="flex items-center gap-4">
+          {CONTACT_PEOPLE.map((p) => (
+            <a
+              key={p.id}
+              dir="ltr"
+              href={`tel:${p.phoneE164}`}
+              className="hover:text-primary-fixed-dim transition-colors"
+            >
+              {p.phoneDisplay}
+            </a>
+          ))}
+        </span>
       </div>
     </div>
   );

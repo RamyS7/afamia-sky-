@@ -1,26 +1,19 @@
 
 import type { Metadata } from "next";
-import { Noto_Serif, Plus_Jakarta_Sans, Noto_Sans_Arabic } from "next/font/google";
+import { Plus_Jakarta_Sans, Noto_Sans_Arabic } from "next/font/google";
 import "../globals.css";
-
-const notoSerif = Noto_Serif({
-  variable: "--font-noto-serif",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap",
-});
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-noto-sans-arabic",
   subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -31,17 +24,37 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const isAr = lang === "ar";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.afamiaplywood.com";
+  const title = isAr
+    ? "AFAMIA SKY PLYWOOD LLC | مصنع أبلكاش وأخشاب في الإسكندرية"
+    : "AFAMIA SKY PLYWOOD LLC | Plywood, Timber & Veneer in Alexandria, Egypt";
+  const description = isAr
+    ? "مصنع أبلكاش في الإسكندرية، مصر. نورّد الألواح وأبلكاش البتولا والأخشاب الصلبة واللينة وقشرة الخشب وجذوع البتولا."
+    : "Plywood factory in Alexandria, Egypt. We supply panels, birch plywood, hardwood, softwood, veneer and birch logs.";
 
   return {
-    title: isAr
-      ? "أفاميا لتجارة وتصنيع الأخشاب والأبلكاش | Afamia Timber & Plywood"
-      : "Afamia Timber & Plywood | Quality Wood & Plywood Supply",
-    description: isAr
-      ? "متخصصون في تصنيع الأبلكاش وتوريد الأخشاب والجزوع عالية الجودة لتلبية متطلبات المقاولات، المصانع، وكبرى المشاريع الإنشائية والتجارية."
-      : "Specialized in plywood manufacturing and supplying high-quality timber and raw logs for contracting companies, manufacturing plants, and commercial construction projects.",
-    icons: {
-      icon: "/logo.png",
-      apple: "/logo.png",
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
+    alternates: {
+      canonical: `/${lang}`,
+      languages: {
+        ar: "/ar",
+        en: "/en",
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/${lang}`,
+      siteName: "AFAMIA SKY PLYWOOD",
+      locale: isAr ? "ar_EG" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
@@ -65,7 +78,8 @@ export default async function LocaleLayout({
     <html
       lang={validLang}
       dir={dir}
-      className={`${notoSerif.variable} ${plusJakartaSans.variable} ${notoSansArabic.variable}`}
+      data-scroll-behavior="smooth"
+      className={`${plusJakartaSans.variable} ${notoSansArabic.variable}`}
       suppressHydrationWarning
     >
       <head>

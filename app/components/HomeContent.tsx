@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Header from "./Header";
-import TopTicker from "./TopTicker";
 import HeroSection from "./HeroSection";
 import AboutSection from "./AboutSection";
 import ProductsSection from "./ProductsSection";
@@ -32,23 +31,22 @@ export default function HomeContent({ lang, t }: HomeContentProps) {
   return (
     <div className="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
       {/* Fixed Header */}
-      <Header currentLang={lang} t={t.nav} />
+      <Header currentLang={lang} t={t.nav} onOpenQuote={() => handleOpenQuote()} />
 
       {/* Main Container */}
       <main className="w-full pt-20 bg-surface min-h-[calc(100vh-80px)]">
         <div className="flex flex-col w-full" id="root-portal">
-          <TopTicker t={t.topTicker} />
           <HeroSection t={t.hero} />
           <AboutSection t={t.about} />
           <ProductsSection t={t.products} onOpenQuoteModal={handleOpenQuote} />
-          <WhyChooseSection t={t.whyChoose} />
-          <ServicesSection t={t.services} />
+          <ServicesSection t={t.supply} />
+          <WhyChooseSection t={t.enquiry} />
           <CTAStrip t={t.cta} onOpenQuoteModal={() => handleOpenQuote()} />
           <ContactSection t={t.contact} lang={lang} />
         </div>
       </main>
 
-      <Footer t={t.footer} />
+      <Footer t={t.footer} contact={t.contact} />
 
       <FloatingWhatsApp t={t.floatingContact} onOpenQuoteModal={() => handleOpenQuote()} />
 

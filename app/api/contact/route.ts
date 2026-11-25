@@ -1,19 +1,42 @@
 import nodemailer from "nodemailer";
-import { CONTACT_EMAIL } from "../../lib/contact";
+import { INQUIRY_EMAIL } from "../../lib/contact";
 
-// يستقبل طلبات فورم التواصل ومودال عرض السعر ويرسلها لإيميل المصنع عبر Gmail SMTP.
-// يتطلب متغيرَي البيئة GMAIL_USER و GMAIL_APP_PASSWORD (App Password من إعدادات حساب جوجل).
+// يستقبل طلبات فورم التواصل ومودال عرض السعر ويرسلها لإيميل المصنع.
+// الإرسال بطريقتين:
+// 1) لو GMAIL_USER و GMAIL_APP_PASSWORD متظبطين ← Gmail SMTP مباشرة (الأفضل).
+// 2) غير كده ← خدمة FormSubmit المجانية (من غير باسورد، بس البيانات بتعدي على سيرفرهم،
+//    وأول إرسال بيبعت إيميل تفعيل لصندوق afamiaplywood@gmail.com لازم يتداس على اللينك اللي فيه مرة واحدة).
 
 const PRODUCTS: Record<string, string> = {
-  plywood: "أبلكاش (Plywood)",
-  "red-pine": "صنوبر أحمر (Red Pine)",
-  spruce: "تنوب (Spruce)",
-  "birch-logs": "جزوع بتولا (Birch Logs)",
-  "aspen-logs": "جزوع حور (Aspen Logs)",
-  "custom-solution": "حلول خاصة (Custom)",
+  panels: "ألواح خشبية (Panels)",
+  "birch-plywood": "أبلكاش بتولا (Birch plywood)",
+  hardwood: "أخشاب صلبة (Hardwood)",
+  softwood: "أخشاب لينة (Softwood)",
+  veneer: "قشرة خشب (Veneer)",
+  "birch-veneer": "فينير بتولا (Birch veneer)",
+  "birch-logs": "جذوع بتولا (Birch logs)",
+  "custom-solution": "طلب آخر / متطلبات خاصة (Custom)",
 };
 
 const LIMITS = { name: 120, company: 160, phone: 40, email: 160, message: 4000 } as const;
+
+// حد بسيط لعدد الطلبات من نفس العنوان (في الذاكرة — بيحمي من الإغراق العادي،
+// ومش بديل عن حماية الاستضافة لو حصل هجوم حقيقي).
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 5;
+const MAX_BODY_BYTES = 20_000;
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) {
+    for (const [k, v] of hits) if (v.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(k);
+  }
+  return recent.length > RATE_MAX;
+}
 
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -21,9 +44,27 @@ const escapeHtml = (s: string) =>
 const clean = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
 export async function POST(request: Request) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (rateLimited(ip)) {
+    return Response.json({ ok: false, error: "too_many_requests" }, { status: 429 });
+  }
+
+  const length = Number(request.headers.get("content-length") ?? 0);
+  if (length > MAX_BODY_BYTES) {
+    return Response.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+  }
+
   let body: Record<string, unknown>;
   try {
-    body = await request.json();
+    const raw = await request.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return Response.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+    }
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      return Response.json({ ok: false, error: "invalid_json" }, { status: 400 });
+    }
+    body = parsed as Record<string, unknown>;
   } catch {
     return Response.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
@@ -55,13 +96,6 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "invalid_fields" }, { status: 400 });
   }
 
-  const user = process.env.GMAIL_USER;
-  const pass = process.env.GMAIL_APP_PASSWORD;
-  if (!user || !pass) {
-    console.error("[contact] GMAIL_USER / GMAIL_APP_PASSWORD are not set — email not sent");
-    return Response.json({ ok: false, error: "not_configured" }, { status: 503 });
-  }
-
   const productLabel = PRODUCTS[data.product];
   const sourceLabel = data.source === "quick-quote" ? "طلب عرض سعر سريع" : "فورم تواصل معنا";
   const rows: [string, string][] = [
@@ -75,7 +109,7 @@ export async function POST(request: Request) {
 
   const html = `
     <div dir="rtl" style="font-family:Arial,sans-serif;font-size:15px;color:#222">
-      <h2 style="color:#7a4a1c">طلب جديد من موقع أفاميا</h2>
+      <h2 style="color:#7a4a1c">طلب جديد من موقع AFAMIA SKY</h2>
       <table cellpadding="6" style="border-collapse:collapse">
         ${rows
           .map(
@@ -91,19 +125,50 @@ export async function POST(request: Request) {
   const text =
     rows.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\nتفاصيل الطلب:\n${data.message}`;
 
+  const to = process.env.CONTACT_TO_EMAIL || INQUIRY_EMAIL;
+  const subject = `${sourceLabel}: ${data.company} — ${productLabel}`;
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user, pass },
-    });
-    await transporter.sendMail({
-      from: `"موقع أفاميا" <${user}>`,
-      to: process.env.CONTACT_TO_EMAIL || CONTACT_EMAIL,
-      replyTo: `"${data.name.replace(/"/g, "")}" <${data.email}>`,
-      subject: `${sourceLabel}: ${data.company} — ${productLabel}`,
-      text,
-      html,
-    });
+    if (user && pass) {
+      // الطريقة المباشرة: Gmail SMTP
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: { user, pass },
+      });
+      await transporter.sendMail({
+        from: `"موقع AFAMIA SKY" <${user}>`,
+        to,
+        replyTo: `"${data.name.replace(/"/g, "")}" <${data.email}>`,
+        subject,
+        text,
+        html,
+      });
+    } else {
+      // البديل من غير باسورد: FormSubmit
+      const res = await fetch(`https://formsubmit.co/ajax/${to}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: subject,
+          _template: "table",
+          _replyto: data.email,
+          "الاسم": data.name,
+          "الشركة": data.company,
+          "الهاتف": data.phone,
+          "الإيميل": data.email,
+          "المنتج": productLabel,
+          "المصدر": `${sourceLabel} (${data.lang.toUpperCase()})`,
+          "تفاصيل الطلب": data.message,
+        }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { success?: string | boolean };
+      if (!res.ok || !(json.success === true || json.success === "true")) {
+        console.error("[contact] FormSubmit failed", res.status, json);
+        return Response.json({ ok: false, error: "send_failed" }, { status: 502 });
+      }
+    }
   } catch (err) {
     console.error("[contact] send failed", err);
     return Response.json({ ok: false, error: "send_failed" }, { status: 502 });

@@ -1,62 +1,44 @@
-
 import React from "react";
 import { Dictionary } from "../[lang]/dictionaries";
 
 interface WhyChooseSectionProps {
-  t: Dictionary["whyChoose"];
+  t: Dictionary["enquiry"];
 }
 
+// قسم "Your product enquiry" من ملف العرض: إيه اللي نكتبه لما نطلب منتج
 export default function WhyChooseSection({ t }: WhyChooseSectionProps) {
-  const items = [
-    { number: "01", icon: "verified", ...t.item1 },
-    { number: "02", icon: "local_shipping", ...t.item2 },
-    { number: "03", icon: "support_agent", ...t.item3 },
-    { number: "04", icon: "category", ...t.item4 },
-    { number: "05", icon: "handshake", ...t.item5 },
-  ];
+  const items = [t.items.i1, t.items.i2, t.items.i3, t.items.i4];
 
   return (
-    <section className="w-full bg-surface py-gutter-3xl">
+    <section className="w-full bg-surface py-gutter-3xl" id="enquiry">
       <div className="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
-        {/* Section Tag */}
-        <div className="text-center max-w-3xl mx-auto mb-gutter-2xl">
-          <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary font-bold block mb-2">
-            {t.tag}
-          </span>
-          <h2 className="font-headline-lg text-headline-lg text-on-surface mb-4">
-            {t.title}
-          </h2>
-          <p className="font-body-md text-body-md text-on-surface-variant">
-            {t.subtitle}
-          </p>
-        </div>
-
-        {/* 5 Structured Columns / Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {items.map((adv) => (
-            <div
-              key={adv.number}
-              className="p-6 bg-surface-container-lowest shadow-sm flex flex-col justify-between hover:translate-y-[-4px] transition-transform duration-300"
-            >
-              <div>
-                <div className="font-headline-lg text-headline-lg text-primary/30 mb-4 font-mono">
-                  {adv.number}
-                </div>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface mb-2">
-                  {adv.title}
-                </h3>
-                <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                  {adv.desc}
-                </p>
-              </div>
-              <div className="mt-6 pt-4 flex items-center gap-1 text-primary font-spec-code text-spec-code">
-                <span className="material-symbols-outlined text-[16px]">
-                  {adv.icon}
-                </span>
-                <span>{adv.badge}</span>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+          <div className="lg:col-span-5 text-start">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-10 h-0.5 bg-accent" />
+              <span className="font-label-md text-label-md uppercase tracking-widest text-primary font-bold">
+                {t.tag}
+              </span>
             </div>
-          ))}
+            <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6">
+              {t.title}
+            </h2>
+            <p className="font-body-md text-body-md text-secondary">{t.note}</p>
+          </div>
+
+          <ol className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {items.map((text, i) => (
+              <li
+                key={text}
+                className="bg-surface-container-lowest p-6 shadow-sm flex items-start gap-4 text-start"
+              >
+                <span className="font-headline-md text-headline-md text-accent leading-none" dir="ltr">
+                  0{i + 1}
+                </span>
+                <span className="font-headline-sm text-headline-sm text-on-surface">{text}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

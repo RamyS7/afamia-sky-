@@ -34,7 +34,7 @@ export default function CTAStrip({ t, onOpenQuoteModal }: CTAStripProps) {
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
             <a
-              className="w-full sm:w-auto h-12 px-8 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-colors cursor-pointer rounded-full"
+              className="w-full sm:w-auto h-12 px-8 bg-accent hover:bg-primary-fixed text-on-primary-container font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-colors cursor-pointer rounded-full"
               href="#contact-inquiry"
             >
               <span className="material-symbols-outlined text-[18px]">send</span>
