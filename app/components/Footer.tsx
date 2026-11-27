@@ -68,7 +68,7 @@ export default function Footer({ t, contact }: FooterProps) {
             </span>
             <ul className="space-y-3 font-body-sm text-body-sm text-surface-container-high">
               {products.map((name) => (
-                <li key={name} className="hover:text-surface-bright transition-colors">
+                <li key={name} className="hover:text-accent transition-colors">
                   <a href="#products-showcase">{name}</a>
                 </li>
               ))}
@@ -82,7 +82,7 @@ export default function Footer({ t, contact }: FooterProps) {
             </span>
             <ul className="space-y-3 font-body-sm text-body-sm text-surface-container-high">
               {links.map((l) => (
-                <li key={l.href} className="hover:text-surface-bright transition-colors">
+                <li key={l.href} className="hover:text-accent transition-colors">
                   <a href={l.href}>{l.label}</a>
                 </li>
               ))}
@@ -103,7 +103,7 @@ export default function Footer({ t, contact }: FooterProps) {
                 <div key={p.id} className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-[18px] text-accent shrink-0 mt-0.5">call</span>
                   <span>
-                    <a dir="ltr" href={`tel:${p.phoneE164}`} className="hover:text-surface-bright transition-colors">
+                    <a dir="ltr" href={`tel:${p.phoneE164}`} className="hover:text-accent transition-colors">
                       {p.phoneDisplay}
                     </a>
                     <span className="block text-outline-variant">
@@ -114,13 +114,13 @@ export default function Footer({ t, contact }: FooterProps) {
               ))}
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[18px] text-accent shrink-0">mail</span>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-surface-bright transition-colors [overflow-wrap:anywhere]">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-accent transition-colors [overflow-wrap:anywhere]">
                   {CONTACT_EMAIL}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[18px] text-accent shrink-0">language</span>
-                <a dir="ltr" href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-surface-bright transition-colors">
+                <a dir="ltr" href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
                   {WEBSITE_DISPLAY}
                 </a>
               </div>

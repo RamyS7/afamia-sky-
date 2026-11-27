@@ -100,7 +100,7 @@ export default function ContactSection({ t, lang }: ContactSectionProps) {
                         {t.roles[p.id]}
                       </span>
                       <a
-                        className="font-body-md text-body-md font-semibold text-primary hover:text-on-surface transition-colors"
+                        className="font-body-md text-body-md font-semibold text-primary hover:text-secondary transition-colors"
                         dir="ltr"
                         href={`tel:${p.phoneE164}`}
                       >
@@ -133,7 +133,7 @@ export default function ContactSection({ t, lang }: ContactSectionProps) {
                       {t.info.emailTitle}
                     </span>
                     <a
-                      className="font-body-md text-body-md font-semibold text-on-surface block mt-0.5 hover:text-primary transition-colors [overflow-wrap:anywhere]"
+                      className="font-body-md text-body-md font-semibold text-on-surface block mt-0.5 hover:text-secondary transition-colors [overflow-wrap:anywhere]"
                       dir="ltr"
                       href={`mailto:${CONTACT_EMAIL}`}
                     >
@@ -151,7 +151,7 @@ export default function ContactSection({ t, lang }: ContactSectionProps) {
                       {t.info.websiteTitle}
                     </span>
                     <a
-                      className="font-body-md text-body-md font-semibold text-on-surface block mt-0.5 hover:text-primary transition-colors"
+                      className="font-body-md text-body-md font-semibold text-on-surface block mt-0.5 hover:text-secondary transition-colors"
                       dir="ltr"
                       href={WEBSITE_URL}
                       target="_blank"

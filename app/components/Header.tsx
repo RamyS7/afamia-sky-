@@ -192,7 +192,7 @@ export default function Header({ currentLang, t, onOpenQuote }: HeaderProps) {
                 className={`relative px-3.5 py-2 font-label-md text-label-md font-semibold rounded-full transition-colors ${
                   active
                     ? "text-primary bg-surface-container-low"
-                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low/70"
+                    : "text-on-surface-variant hover:text-secondary hover:bg-surface-container-low/70"
                 }`}
               >
                 {l.label}
@@ -247,7 +247,7 @@ export default function Header({ currentLang, t, onOpenQuote }: HeaderProps) {
               href={l.href}
               onClick={(e) => goTo(e, l.id)}
               className={`block py-3 border-b border-outline-variant/50 font-label-md text-label-md font-semibold ${
-                activeId === l.id ? "text-primary" : "text-on-surface-variant hover:text-primary"
+                activeId === l.id ? "text-primary" : "text-on-surface-variant hover:text-secondary"
               }`}
             >
               {l.label}
