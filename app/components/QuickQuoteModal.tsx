@@ -90,7 +90,7 @@ export default function QuickQuoteModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-inverse-surface/60 backdrop-blur-sm animate-fade-in"
       onClick={(e) => {
         // الضغط على الخلفية (برّه الصندوق) يقفل المودال
         if (e.target === e.currentTarget) onClose();
@@ -250,7 +250,7 @@ export default function QuickQuoteModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-12 bg-primary hover:bg-primary-container text-on-primary font-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer rounded-full"
+                className="w-full h-12 bg-primary hover:bg-inverse-surface text-on-primary font-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer rounded-full"
               >
                 {isSubmitting ? (
                   <>

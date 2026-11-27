@@ -346,7 +346,7 @@ export default function ContactSection({ t, lang }: ContactSectionProps) {
                 )}
                 {!isSubmitted ? (
                   <button
-                    className="w-full h-14 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-colors cursor-pointer disabled:opacity-50 rounded-full"
+                    className="w-full h-14 bg-primary hover:bg-inverse-surface text-on-primary font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-colors cursor-pointer disabled:opacity-50 rounded-full"
                     id="submit-btn"
                     type="submit"
                     disabled={isSubmitting}

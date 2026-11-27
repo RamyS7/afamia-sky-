@@ -24,7 +24,7 @@ export default function Footer({ t, contact }: FooterProps) {
   ];
 
   return (
-    <footer className="w-full bg-surface-container-low text-on-surface border-t border-outline-variant pt-gutter-3xl pb-gutter-xl">
+    <footer className="w-full bg-inverse-surface text-inverse-on-surface border-t border-accent/40 pt-gutter-3xl pb-gutter-xl">
       <div className="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-gutter-xl mb-gutter-2xl text-start">
           {/* العلامة */}
@@ -36,13 +36,13 @@ export default function Footer({ t, contact }: FooterProps) {
               height={179}
               className="h-16 sm:h-20 w-auto object-contain mb-gutter-md"
             />
-            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm mb-gutter-lg leading-relaxed">
+            <p className="font-body-sm text-body-sm text-surface-container-high max-w-sm mb-gutter-lg leading-relaxed">
               {t.description}
             </p>
             <div className="flex items-center gap-gutter-sm">
               <a
                 aria-label="Facebook"
-                className="w-10 h-10 bg-inverse-surface/10 hover:bg-inverse-surface text-on-surface hover:text-surface-bright flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-inverse-on-surface/10 hover:bg-accent text-inverse-on-surface hover:text-on-primary-container flex items-center justify-center transition-colors"
                 href={FACEBOOK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -53,7 +53,7 @@ export default function Footer({ t, contact }: FooterProps) {
               </a>
               <a
                 aria-label="Email"
-                className="w-10 h-10 bg-inverse-surface/10 hover:bg-inverse-surface text-on-surface hover:text-surface-bright flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-inverse-on-surface/10 hover:bg-accent text-inverse-on-surface hover:text-on-primary-container flex items-center justify-center transition-colors"
                 href={`mailto:${CONTACT_EMAIL}`}
               >
                 <span className="material-symbols-outlined text-[18px]">mail</span>
@@ -63,12 +63,12 @@ export default function Footer({ t, contact }: FooterProps) {
 
           {/* المنتجات */}
           <div className="lg:col-span-3 flex flex-col">
-            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary mb-gutter-md">
+            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim mb-gutter-md">
               {t.col1Title}
             </span>
-            <ul className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+            <ul className="space-y-3 font-body-sm text-body-sm text-surface-container-high">
               {products.map((name) => (
-                <li key={name} className="hover:text-on-surface transition-colors">
+                <li key={name} className="hover:text-surface-bright transition-colors">
                   <a href="#products-showcase">{name}</a>
                 </li>
               ))}
@@ -77,12 +77,12 @@ export default function Footer({ t, contact }: FooterProps) {
 
           {/* الشركة */}
           <div className="lg:col-span-2 flex flex-col">
-            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary mb-gutter-md">
+            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim mb-gutter-md">
               {t.col2Title}
             </span>
-            <ul className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+            <ul className="space-y-3 font-body-sm text-body-sm text-surface-container-high">
               {links.map((l) => (
-                <li key={l.href} className="hover:text-on-surface transition-colors">
+                <li key={l.href} className="hover:text-surface-bright transition-colors">
                   <a href={l.href}>{l.label}</a>
                 </li>
               ))}
@@ -91,10 +91,10 @@ export default function Footer({ t, contact }: FooterProps) {
 
           {/* التواصل */}
           <div className="lg:col-span-3 flex flex-col">
-            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary mb-gutter-md">
+            <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim mb-gutter-md">
               {t.col3Title}
             </span>
-            <div className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+            <div className="space-y-3 font-body-sm text-body-sm text-surface-container-high">
               <div className="flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[18px] text-accent shrink-0 mt-0.5">location_on</span>
                 <span>{contact.info.locationDesc}</span>
@@ -103,10 +103,10 @@ export default function Footer({ t, contact }: FooterProps) {
                 <div key={p.id} className="flex items-start gap-2.5">
                   <span className="material-symbols-outlined text-[18px] text-accent shrink-0 mt-0.5">call</span>
                   <span>
-                    <a dir="ltr" href={`tel:${p.phoneE164}`} className="hover:text-on-surface transition-colors">
+                    <a dir="ltr" href={`tel:${p.phoneE164}`} className="hover:text-surface-bright transition-colors">
                       {p.phoneDisplay}
                     </a>
-                    <span className="block text-secondary">
+                    <span className="block text-outline-variant">
                       {p.name} · {contact.roles[p.id]}
                     </span>
                   </span>
@@ -114,13 +114,13 @@ export default function Footer({ t, contact }: FooterProps) {
               ))}
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[18px] text-accent shrink-0">mail</span>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-on-surface transition-colors [overflow-wrap:anywhere]">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-surface-bright transition-colors [overflow-wrap:anywhere]">
                   {CONTACT_EMAIL}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[18px] text-accent shrink-0">language</span>
-                <a dir="ltr" href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-on-surface transition-colors">
+                <a dir="ltr" href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-surface-bright transition-colors">
                   {WEBSITE_DISPLAY}
                 </a>
               </div>
@@ -128,7 +128,7 @@ export default function Footer({ t, contact }: FooterProps) {
           </div>
         </div>
 
-        <div className="pt-gutter-lg border-t border-outline-variant font-spec-code text-spec-code text-secondary text-center sm:text-start">
+        <div className="pt-gutter-lg border-t border-inverse-on-surface/15 font-spec-code text-spec-code text-outline-variant text-center sm:text-start">
           {t.copyright}
         </div>
       </div>

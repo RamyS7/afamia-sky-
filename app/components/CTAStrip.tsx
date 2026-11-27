@@ -20,7 +20,7 @@ export default function CTAStrip({ t, onOpenQuoteModal }: CTAStripProps) {
       {/* Subtle architectural pattern line background */}
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#e5b877_1px,transparent_1px)] [background-size:24px_24px]" />
       <div className="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop relative z-10">
-        <div className="bg-primary-container/20 p-8 md:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 backdrop-blur-sm">
+        <div className="bg-primary/70 p-8 md:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 backdrop-blur-sm">
           <div className="max-w-2xl text-start">
             <span className="font-spec-code text-spec-code uppercase tracking-widest text-primary-fixed-dim block mb-3">
               {t.tag}

@@ -142,7 +142,7 @@ export default function Header({ currentLang, t, onOpenQuote }: HeaderProps) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 w-full z-50 bg-surface/95 backdrop-blur-xl border-b transition-shadow duration-300 ${
-        scrolled ? "border-outline-variant shadow-[0_2px_14px_rgba(36,37,31,0.08)]" : "border-transparent"
+        scrolled ? "border-outline-variant shadow-[0_2px_14px_rgba(16,35,50,0.08)]" : "border-transparent"
       }`}
     >
       <div className="h-20 max-w-[1440px] mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop flex items-center gap-gutter-md">

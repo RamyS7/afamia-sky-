@@ -108,13 +108,13 @@ export async function POST(request: Request) {
   ];
 
   const html = `
-    <div dir="rtl" style="font-family:Arial,sans-serif;font-size:15px;color:#222">
-      <h2 style="color:#7a4a1c">طلب جديد من موقع AFAMIA SKY</h2>
+    <div dir="rtl" style="font-family:Arial,sans-serif;font-size:15px;color:#102332">
+      <h2 style="color:#102332">طلب جديد من موقع AFAMIA SKY</h2>
       <table cellpadding="6" style="border-collapse:collapse">
         ${rows
           .map(
             ([k, v]) =>
-              `<tr><td style="font-weight:bold;border-bottom:1px solid #eee">${k}</td><td style="border-bottom:1px solid #eee" dir="auto">${escapeHtml(v)}</td></tr>`
+              `<tr><td style="font-weight:bold;border-bottom:1px solid #e8ddcb">${k}</td><td style="border-bottom:1px solid #e8ddcb" dir="auto">${escapeHtml(v)}</td></tr>`
           )
           .join("")}
       </table>
